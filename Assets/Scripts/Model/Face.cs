@@ -1,0 +1,118 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+
+namespace Model
+{
+    public class Face : CubeElement<Face>
+    {
+        private readonly int _faceSize;
+        private readonly Cell[,] _cells;
+
+        public Face(int faceSize)
+        {
+            _faceSize = faceSize;
+            _cells = new Cell[faceSize, faceSize];
+            CreateCells();
+        }
+
+        public int FaceSize => _faceSize;
+
+        public void LinkCells()
+        {
+            for (int i = 0; i < _cells.GetLength(0); i++)
+            {
+                for (int j = 0; j < _cells.GetLength(1); j++)
+                {
+                    var directions = Enum.GetValues(typeof(Direction)).Cast<Direction>();
+
+                    Cell cell = _cells[i, j];
+                    Vector2 point = new Vector2(i, j);
+
+                    foreach (var direction in directions)
+                        SetCellNeighbor(cell, point, direction);
+                }
+            }
+        }
+
+        public Cell GetCellByIndex(int i, int j) => //TODO: indexator
+            _cells[i, j];
+
+        private Cell GetEdgeCell(Face fromFace, int index, Direction outcomingDirection)
+        {
+            Dictionary<Direction, Func<int, Cell>> getCell = new Dictionary<Direction, Func<int, Cell>>()
+            {
+                [Direction.Left] = edgeIndex => _cells[edgeIndex, 0],
+                [Direction.Right] = edgeIndex => _cells[edgeIndex, _faceSize - 1],
+                [Direction.Up] = edgeIndex => _cells[0, edgeIndex],
+                [Direction.Down] = edgeIndex => _cells[_faceSize - 1, edgeIndex]
+            };
+
+            Direction incomingDirection = NeighborDirections[fromFace];
+
+            if (incomingDirection == outcomingDirection)
+            {
+                index = InvertIndex(index);
+            }
+
+            return getCell[incomingDirection](index);
+        }
+
+        private void CreateCells()
+        {
+            for (int i = 0; i < _cells.GetLength(0); i++)
+            {
+                for (int j = 0; j < _cells.GetLength(1); j++)
+                {
+                    _cells[i, j] = new Cell();
+                }
+            }
+        }
+
+        private void SetCellNeighbor(Cell cell, Vector2 cellPosition, Direction direction)
+        {
+            Dictionary<Direction, Vector2> move = new Dictionary<Direction, Vector2>()
+            {
+                [Direction.Up] = new Vector2(-1, 0),
+                [Direction.Right] = new Vector2(0, 1),
+                [Direction.Down] = new Vector2(1, 0),
+                [Direction.Left] = new Vector2(0, -1)
+            };
+
+            Vector2 targetPoint = cellPosition + move[direction];
+
+            Cell neighbour;
+
+            if (!OutOfRange(targetPoint))
+            {
+                neighbour = _cells[(int)targetPoint.X, (int)targetPoint.Y];
+            }
+            else
+            {
+                int index = IsHorizontalDirection(direction) ? (int)cellPosition.X : (int)cellPosition.Y;
+                neighbour = Neighbors[direction].GetEdgeCell(this, index, direction);
+            }
+
+            cell.SetNeighbor(direction, neighbour);
+            Console.WriteLine();
+        }
+
+        bool OutOfRange(Vector2 point) => point.X < 0 || point.X >= _faceSize || point.Y < 0 || point.Y >= _faceSize;
+
+        private bool IsHorizontalDirection(Direction direction) =>
+            direction == Direction.Left || direction == Direction.Right;
+
+        private int InvertIndex(int index)
+        {
+            int[] indexes = new int[_faceSize];
+
+            for (int i = 0; i < indexes.Length; i++)
+                indexes[i] = i;
+
+            indexes = indexes.Reverse().ToArray();
+            
+            return indexes[index];
+        }
+    }
+}
