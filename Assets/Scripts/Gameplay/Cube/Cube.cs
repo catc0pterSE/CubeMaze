@@ -1,15 +1,14 @@
 ﻿using Model;
 using Modules;
-using test;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace View
+namespace Gameplay
 {
-    public class CubeView : MonoBehaviour
+    public class Cube : MonoBehaviour
     {
         [SerializeField] private int _size;
-        [SerializeField] private SerializableDictionary<CubeFaceType, FaceView> _faces;
+        [SerializeField] private SerializableDictionary<CubeFaceType, Face> _faces;
 
         private void Awake()
         {
@@ -18,7 +17,7 @@ namespace View
 
         private void Initialize()
         {
-            Cube cubeModel = new Cube(_size);
+            Model.Cube cubeModel = new Model.Cube(_size);
             BackTrackingMazeGenerator generator = new BackTrackingMazeGenerator();
             var randomCell = cubeModel.TypedFaces[CubeFaceType.Front][Random.Range(0, _size), Random.Range(0, _size)];
             generator.Generate(randomCell);
@@ -27,7 +26,7 @@ namespace View
                 _faces.Get(pair.Key).Initialize(pair.Value);
         }
 
-        public FaceView GetFaceView(CubeFaceType cubeFaceType) =>
+        public Face GetFaceView(CubeFaceType cubeFaceType) =>
             _faces.Get(cubeFaceType);
     }
 }

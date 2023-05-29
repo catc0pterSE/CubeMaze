@@ -2,9 +2,9 @@
 using Modules;
 using UnityEngine;
 
-namespace View
+namespace Gameplay
 {
-    public class CellView : MonoBehaviour
+    public class Cell : MonoBehaviour
     {
         [SerializeField] private MeshRenderer _floorMeshRenderer;
         [SerializeField] private MeshRenderer _anyWallMeshRenderer;
@@ -13,7 +13,7 @@ namespace View
         [SerializeField] private Material _floorStartMaterial;
         [SerializeField] private Material _floorFinishMaterial;
 
-        public void Initialize(Cell cellModel)
+        public void Initialize(Model.Cell cellModel)
         {
             foreach (var pair in cellModel.Walls)
             {

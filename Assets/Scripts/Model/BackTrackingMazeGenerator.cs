@@ -13,7 +13,7 @@ namespace Model
             currentCell.Visited = true;
             currentCell.IsStart = true;
 
-            Cell furthest = null;
+            Cell furthest = currentCell;
             int maxDistance = Int32.MinValue;
 
             do
