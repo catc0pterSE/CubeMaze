@@ -11,6 +11,10 @@ namespace Model
             Stack<Cell> cellStack = new Stack<Cell>();
             Cell currentCell = cell;
             currentCell.Visited = true;
+            currentCell.IsStart = true;
+
+            Cell furthest = null;
+            int maxDistance = Int32.MinValue;
 
             do
             {
@@ -20,6 +24,7 @@ namespace Model
                 foreach (Direction direction in directions)
                 {
                     var neighbor = currentCell.Neighbors[direction];
+
                     if (neighbor.Visited == false)
                         unvisitedNeighbors.Add(neighbor);
                 }
@@ -31,13 +36,21 @@ namespace Model
                     chosenCell.Visited = true;
                     currentCell = chosenCell;
                     cellStack.Push(currentCell);
+                    
+                    if (cellStack.Count > maxDistance)
+                    {
+                        maxDistance = cellStack.Count;
+                        furthest = currentCell;
+                    }
+
                 }
                 else
                 {
                     currentCell = cellStack.Pop();
                 }
+            } while (cellStack.Count > 0);
 
-            } while (cellStack.Count>0);
+            furthest.IsEnd = true;
         }
 
         private void DisableWalls(Cell current, Cell next)

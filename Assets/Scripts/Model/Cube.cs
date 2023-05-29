@@ -7,17 +7,7 @@ namespace Model
     {
         private const int CubeFacesCount = 6;
 
-        private readonly Face[] _faces = new Face[CubeFacesCount];
-
-        private readonly int[,] _cubeFacesRelationModel = // index i = Front - 0; Left - 1; Right - 2; Back - 3; Top - 4; Bot - 5   || значение j - сосед L R U D соответвенно
-        {
-            { 1, 2, 4, 5 },
-            { 3, 0, 4, 5 },
-            { 0, 3, 4, 5 },
-            { 2, 1, 4, 5 },
-            { 1, 2, 3, 0 },
-            { 1, 2, 0, 3 }
-        };
+        private readonly Dictionary<CubeFaceType, Face> _typedFaces = new Dictionary<CubeFaceType, Face>();
 
         public Cube(int faceSize)
         {
@@ -26,29 +16,38 @@ namespace Model
             LinkCells();
         }
 
-        public IReadOnlyCollection<Face> Faces => _faces;
+        public IReadOnlyDictionary<CubeFaceType, Face> TypedFaces => _typedFaces;
 
         private void LinkCells()
         {
-            foreach (Face face in _faces)
-                face.LinkCells();
+            foreach (CubeFaceType faceType in Enum.GetValues(typeof(CubeFaceType)))
+                _typedFaces[faceType].LinkCells();
         }
 
         private void CreateFaces(int faceSize)
         {
-            for (int i = 0; i < _faces.Length; i++)
-            {
-                _faces[i] = new Face(faceSize);
-            }
+            foreach (CubeFaceType faceType in Enum.GetValues(typeof(CubeFaceType)))
+                _typedFaces[faceType] = new Face(faceSize);
         }
 
         private void LinkFaces()
         {
-            for (int i = 0; i < _cubeFacesRelationModel.GetLength(0); i++)
+            CubeFacesRelations cubeFacesRelations = new CubeFacesRelations();
+            var cubeFaceTypes = Enum.GetValues(typeof(CubeFaceType));
+            var directions = Enum.GetValues(typeof(Direction));
+
+            foreach (CubeFaceType cubeFaceType in cubeFaceTypes)
             {
-                for (int j = 0; j < _cubeFacesRelationModel.GetLength(1); j++)
+                var directedFaceTypes = cubeFacesRelations.DirectedNeighbors[cubeFaceType];
+                
+                foreach (Direction direction in directions)
                 {
-                    _faces[i].SetNeighbor((Direction)j, _faces[_cubeFacesRelationModel[i, j]]);
+                    Face face = _typedFaces[cubeFaceType];
+                    Face neighbor = _typedFaces[directedFaceTypes[direction]];
+                    face.SetNeighbor(direction, neighbor);
+
+                    foreach (var nonConsistentFace in cubeFacesRelations.NonConsistentFaceTypes[cubeFaceType])
+                        face.AddNonConsistentFace(_typedFaces[nonConsistentFace]);
                 }
             }
         }

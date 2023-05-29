@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Model;
+using test;
 using UnityEngine;
 
 namespace View
@@ -7,18 +8,22 @@ namespace View
     public class FaceView : MonoBehaviour
     {
         [SerializeField] private CellView _cellPrefab;
-        private Face _faceModel;
+        [SerializeField] private Transform _cameraPosition;
+        [SerializeField] private float _cameraOffsetMultiplier;
         private List<CellView> _cellViews = new List<CellView>();
+
+        public float Size { get; private set; }
+        
+        public CameraPlace CameraPlace => GetComponentInChildren<CameraPlace>();
 
         public void Initialize(Face faceModel)
         {
-            _faceModel = faceModel;
             int size = faceModel.FaceSize;
             Transform faceTransform = transform;
             Vector3 faceForward = faceTransform.forward;
-            faceTransform.position += faceForward*_cellPrefab.CellSize*size/2;
-
-            bool even = size % 2 == 0;
+            Size = size * _cellPrefab.CellSize;
+            _cameraPosition.position = faceTransform.position + faceForward * (Size * _cameraOffsetMultiplier);
+            faceTransform.position += faceForward * Size / 2;
 
             for (int i = 0; i < size; i++)
             {
@@ -26,23 +31,14 @@ namespace View
                 {
                     CellView cellView = Instantiate(_cellPrefab, transform);
                     Transform cellTransform = cellView.transform;
-
-                    float verticalOffset = (size / 2 - i)*_cellPrefab.CellSize;
-                    float horizontalOffset = (size / 2 - j)*_cellPrefab.CellSize;
-
-                    if (even)
-                    {
-                        verticalOffset -= _cellPrefab.CellSize / 2;
-                        horizontalOffset -= _cellPrefab.CellSize / 2;
-                    }
-                    
+                    float verticalOffset = (Size- _cellPrefab.CellSize) / 2 - i * _cellPrefab.CellSize;
+                    float horizontalOffset = (Size - _cellPrefab.CellSize) / 2 - j * _cellPrefab.CellSize;
                     cellTransform.rotation = faceTransform.rotation;
                     cellTransform.position += cellTransform.up * verticalOffset + cellTransform.right * horizontalOffset;
-                    cellView.Initialize(faceModel.GetCellByIndex(i,j));
+                    cellView.Initialize(faceModel[i, j]);
                     _cellViews.Add(cellView);
                 }
             }
-
         }
     }
 }

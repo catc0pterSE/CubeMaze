@@ -10,6 +10,8 @@ namespace Model
         private readonly int _faceSize;
         private readonly Cell[,] _cells;
 
+        private List<Face> _nonConsistentFaces = new List<Face>();
+
         public Face(int faceSize)
         {
             _faceSize = faceSize;
@@ -36,7 +38,10 @@ namespace Model
             }
         }
 
-        public Cell GetCellByIndex(int i, int j) => //TODO: indexator
+        public void AddNonConsistentFace(Face face) =>
+            _nonConsistentFaces.Add(face);
+
+        public Cell this[int i, int j] =>
             _cells[i, j];
 
         private Cell GetEdgeCell(Face fromFace, int index, Direction outcomingDirection)
@@ -51,10 +56,9 @@ namespace Model
 
             Direction incomingDirection = NeighborDirections[fromFace];
 
-            if (incomingDirection == outcomingDirection)
-            {
-                index = InvertIndex(index);
-            }
+
+            if (_nonConsistentFaces.Contains(fromFace))
+                index = _faceSize - 1 - index;
 
             return getCell[incomingDirection](index);
         }
@@ -65,7 +69,18 @@ namespace Model
             {
                 for (int j = 0; j < _cells.GetLength(1); j++)
                 {
-                    _cells[i, j] = new Cell();
+                    Cell cell = new Cell();
+                    
+                    if (i==0)
+                        cell.AddEdge(Direction.Up);
+                    if (i == _faceSize-1)
+                        cell.AddEdge(Direction.Down);
+                    if (j == 0)
+                        cell.AddEdge(Direction.Left);
+                    if (j == _faceSize-1)
+                        cell.AddEdge(Direction.Right);
+                    
+                    _cells[i, j] = cell;
                 }
             }
         }
@@ -102,17 +117,5 @@ namespace Model
 
         private bool IsHorizontalDirection(Direction direction) =>
             direction == Direction.Left || direction == Direction.Right;
-
-        private int InvertIndex(int index)
-        {
-            int[] indexes = new int[_faceSize];
-
-            for (int i = 0; i < indexes.Length; i++)
-                indexes[i] = i;
-
-            indexes = indexes.Reverse().ToArray();
-            
-            return indexes[index];
-        }
     }
 }
