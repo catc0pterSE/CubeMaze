@@ -11,7 +11,7 @@ namespace Gameplay.Cube
         [SerializeField] private int _size;
         [SerializeField] private SerializableDictionary<CubeFaceType, Face> _faces;
 
-        private void Awake()
+        private void Start()
         {
             Initialize();
         }
