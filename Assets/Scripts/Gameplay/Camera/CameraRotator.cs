@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace test
+namespace Gameplay.Camera
 {
     public class CameraRotator: MonoBehaviour
     {

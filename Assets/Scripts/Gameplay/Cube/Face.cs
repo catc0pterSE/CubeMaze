@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Gameplay
+namespace Gameplay.Cube
 {
     public class Face : MonoBehaviour
     {
@@ -14,7 +14,7 @@ namespace Gameplay
         public Vector3 CameraPosition { get; private set; }
         public IReadOnlyCollection<Face> Neigbours => _neghbours;
 
-        public void Initialize(Model.Face faceModel)
+        public void Initialize(Model.Cube.Face faceModel)
         {
             int cellsCount = faceModel.FaceSize;
             float size = cellsCount * _cellPrefab.CellSize;
@@ -26,7 +26,7 @@ namespace Gameplay
         private void Awake() =>
             _transform = transform;
 
-        private void ArrangeCellViews(int cellsCount, float size, Model.Face faceModel)
+        private void ArrangeCellViews(int cellsCount, float size, Model.Cube.Face faceModel)
         {
             for (int i = 0; i < cellsCount; i++)
             {

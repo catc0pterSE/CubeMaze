@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Model
+namespace Model.Cube
 {
     public abstract class CubeElement<T>
     {

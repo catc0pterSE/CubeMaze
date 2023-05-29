@@ -2,7 +2,7 @@
 using Modules;
 using UnityEngine;
 
-namespace Gameplay
+namespace Gameplay.Cube
 {
     public class Cell : MonoBehaviour
     {
@@ -13,7 +13,7 @@ namespace Gameplay
         [SerializeField] private Material _floorStartMaterial;
         [SerializeField] private Material _floorFinishMaterial;
 
-        public void Initialize(Model.Cell cellModel)
+        public void Initialize(Model.Cube.Cell cellModel)
         {
             foreach (var pair in cellModel.Walls)
             {

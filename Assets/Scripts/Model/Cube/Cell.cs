@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Model
+namespace Model.Cube
 {
     public class Cell : CubeElement<Cell>
     {

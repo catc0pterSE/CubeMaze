@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using Model;
+using Model.Cube;
 using UnityEngine;
-using Cube = Gameplay.Cube;
-using Face = Gameplay.Face;
+using Face = Gameplay.Cube.Face;
 using Vector3 = UnityEngine.Vector3;
 
-namespace test
+namespace Gameplay.Camera
 {
     public class CameraMover : MonoBehaviour
     {
-        [SerializeField] private Cube _cube;
+        [SerializeField] private Cube.Cube _cube;
 
         private Face _currentFaceFacing;
         private Coroutine _moveRoutine;
