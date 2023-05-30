@@ -1,4 +1,5 @@
-﻿using Infrastructure.Input;
+﻿using System;
+using Infrastructure.Input;
 using UnityEngine;
 
 namespace Gameplay.Camera
@@ -8,6 +9,16 @@ namespace Gameplay.Camera
         [SerializeField] private float _rotationSpeed = 3;
         
         private IInputService _inputService;
+
+        private void OnEnable()
+        {
+            Cursor.visible = false;
+        }
+
+        private void OnDisable()
+        {
+            Cursor.visible = true;
+        }
 
         public void Initialize(IInputService inputService)
         {
