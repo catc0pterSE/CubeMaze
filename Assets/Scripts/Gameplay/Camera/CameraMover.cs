@@ -1,48 +1,62 @@
 ﻿using System.Collections;
-using Model;
+using Infrastructure.Input;
 using Model.Cube;
 using UnityEngine;
 using Face = Gameplay.Cube.Face;
-using Vector3 = UnityEngine.Vector3;
 
 namespace Gameplay.Camera
 {
     public class CameraMover : MonoBehaviour
     {
-        [SerializeField] private Cube.Cube _cube;
-
+        private Cube.Cube _cube;
         private Face _currentFaceFacing;
         private Coroutine _moveRoutine;
+        private IInputService _inputService;
 
+        public void Initialize(Cube.Cube cube, IInputService inputService)
+        {
+            _inputService = inputService;
+            _cube = cube;
+            ToStartPosition();
+            SubscribeOnInputService();
+        }
 
-        private void Start()
+        private void OnDisable() =>
+            UnsubscribeFromInputService();
+
+        private void SubscribeOnInputService()
+        {
+            _inputService.UpButtonPressed += ChangePositionUp;
+            _inputService.DownButtonPressed += ChangePositionDown;
+            _inputService.LeftButtonPressed += ChangePositionLeft;
+            _inputService.RightButtonPressed += ChangePositionRight;
+        }
+
+        private void UnsubscribeFromInputService()
+        {
+            _inputService.UpButtonPressed -= ChangePositionUp;
+            _inputService.DownButtonPressed -= ChangePositionDown;
+            _inputService.LeftButtonPressed -= ChangePositionLeft;
+            _inputService.RightButtonPressed -= ChangePositionRight;
+        }
+
+        private void ChangePositionUp() =>
+            ChangePosition(transform.up);
+
+        private void ChangePositionDown() =>
+            ChangePosition(-transform.up);
+
+        private void ChangePositionRight() =>
+            ChangePosition(transform.right);
+
+        private void ChangePositionLeft() =>
+            ChangePosition(-transform.right);
+
+        private void ToStartPosition()
         {
             _currentFaceFacing = _cube.GetFaceView(CubeFaceType.Front);
             transform.position = _currentFaceFacing.CameraPosition;
             transform.LookAt(_cube.transform, transform.up);
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                ChangePosition(transform.up);
-            }
-
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                ChangePosition(-transform.right);
-            }
-
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                ChangePosition(-transform.up);
-            }
-
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                ChangePosition(transform.right);
-            }
         }
 
         private void ChangePosition(Vector3 direction)
@@ -64,13 +78,13 @@ namespace Gameplay.Camera
 
             _currentFaceFacing = selectedNeighbour;
 
-            if (_moveRoutine!=null)
+            if (_moveRoutine != null)
                 StopCoroutine(_moveRoutine);
 
             _moveRoutine = StartCoroutine(Move(_currentFaceFacing.CameraPosition));
         }
 
-        private IEnumerator Move( Vector3 newPosition)
+        private IEnumerator Move(Vector3 newPosition)
         {
             while (Vector3.Distance(transform.position, newPosition) > 0.1f)
             {

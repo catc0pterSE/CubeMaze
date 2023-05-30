@@ -12,12 +12,11 @@ namespace UI.Loading
         [SerializeField] private TMP_Text _text;
         [SerializeField] private float _fadingStep = 0.01f;
 
-        private float _defaultCurtainAlpha;
+        private readonly float _defaultCurtainAlpha = 1;
         private Coroutine _fadeJob;
 
         private void Awake()
         {
-            _defaultCurtainAlpha = _curtain.alpha;
             DontDestroyOnLoad(this);
         }
 
@@ -58,8 +57,10 @@ namespace UI.Loading
 
         private IEnumerator Fade(float targetAlpha, Action toDoWhenFaded = null)
         {
+            /*Debug.Log(_curtain.alpha);
+            Debug.Log(targetAlpha);*/
             while (Math.Abs(_curtain.alpha - targetAlpha) > Mathf.Epsilon)
-            {
+            { 
                 _curtain.alpha = Mathf.MoveTowards(_curtain.alpha, targetAlpha, _fadingStep);
                 yield return null;
             }

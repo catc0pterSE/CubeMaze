@@ -2,10 +2,10 @@
 {
     public class ResourcePaths
     {
-        public const string LevelButtonPath = "UI/LevelButton";
-        public const string Player = "Player";
-        public const string PlayerSpriteConfigPath = "Configs/PlayerSpriteConfig";
-        public const string EndPointSpriteConfigPath = "Configs/EndPointSpriteConfig";
-        public const string LineGradientConfigPath = "Configs/LineGradientConfig";
+        public const string InputServicePath = "Input/InputService";
+        public const string CellPath = "Cube/Cell";
+        public const string CubePath = "Cube/Cube";
+        public const string CameraPath = "Camera";
+        public const string BallPath = "Ball";
     }
 }

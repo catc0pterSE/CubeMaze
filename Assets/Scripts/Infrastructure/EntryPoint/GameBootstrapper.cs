@@ -1,4 +1,5 @@
 using System;
+using Infrastructure.CoroutineRunner;
 using Infrastructure.GameStateMachine.States;
 using Infrastructure.SceneManagement;
 using UI.Loading;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace Infrastructure.EntryPoint
 {
-    public class GameBootStrapper : MonoBehaviour, IApplicationQuitHandler
+    public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
     {
         [SerializeField] private LoadingCurtain _loadingCurtain;
         private GameStateMachine.GameStateMachine _stateMachine;
@@ -18,9 +19,8 @@ namespace Infrastructure.EntryPoint
             _loadingCurtain.Show();
 
             _stateMachine = new GameStateMachine.GameStateMachine(
-                new SceneLoader(_loadingCurtain),
-                Services.Services.Container, 
-                this
+                new SceneLoader(_loadingCurtain, this),
+                Services.Services.Container
             );
 
             DontDestroyOnLoad(this);

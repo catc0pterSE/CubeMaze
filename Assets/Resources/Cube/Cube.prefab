@@ -44,8 +44,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cellPrefab: {fileID: 7424431464113831502, guid: 4db5b24b9959f6e4c8fe4f280b137a95, type: 3}
-  _cameraPosition: {fileID: 0}
   _cameraOffsetMultiplier: 1.5
+  _neghbours:
+  - {fileID: 5233586427416491104}
+  - {fileID: 963186979902031516}
+  - {fileID: 1393326819435970178}
+  - {fileID: 5932652117439749147}
 --- !u!1 &4028149842614823596
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,8 +94,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cellPrefab: {fileID: 7424431464113831502, guid: 4db5b24b9959f6e4c8fe4f280b137a95, type: 3}
-  _cameraPosition: {fileID: 0}
   _cameraOffsetMultiplier: 1.5
+  _neghbours:
+  - {fileID: 5233586427416491104}
+  - {fileID: 146467136665585747}
+  - {fileID: 8584751061700298539}
+  - {fileID: 963186979902031516}
 --- !u!1 &4028149842818913037
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,8 +144,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cellPrefab: {fileID: 7424431464113831502, guid: 4db5b24b9959f6e4c8fe4f280b137a95, type: 3}
-  _cameraPosition: {fileID: 0}
   _cameraOffsetMultiplier: 1.5
+  _neghbours:
+  - {fileID: 5233586427416491104}
+  - {fileID: 963186979902031516}
+  - {fileID: 1393326819435970178}
+  - {fileID: 5932652117439749147}
 --- !u!1 &4028149842825933596
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +161,7 @@ GameObject:
   - component: {fileID: 4028149842825933597}
   - component: {fileID: 1401272159433442642}
   m_Layer: 0
-  m_Name: CubeView
+  m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -187,7 +199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc8d6983eeb47d0a475094bff07d5a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _size: 5
   _faces:
     _pairs:
     - _key: 0
@@ -246,8 +257,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cellPrefab: {fileID: 7424431464113831502, guid: 4db5b24b9959f6e4c8fe4f280b137a95, type: 3}
-  _cameraPosition: {fileID: 0}
   _cameraOffsetMultiplier: 1.5
+  _neghbours:
+  - {fileID: 146467136665585747}
+  - {fileID: 8584751061700298539}
+  - {fileID: 1393326819435970178}
+  - {fileID: 5932652117439749147}
 --- !u!1 &4028149843059063273
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,8 +307,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cellPrefab: {fileID: 7424431464113831502, guid: 4db5b24b9959f6e4c8fe4f280b137a95, type: 3}
-  _cameraPosition: {fileID: 0}
   _cameraOffsetMultiplier: 1.5
+  _neghbours:
+  - {fileID: 146467136665585747}
+  - {fileID: 8584751061700298539}
+  - {fileID: 5932652117439749147}
+  - {fileID: 1393326819435970178}
 --- !u!1 &4028149844310057893
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,5 +357,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cellPrefab: {fileID: 7424431464113831502, guid: 4db5b24b9959f6e4c8fe4f280b137a95, type: 3}
-  _cameraPosition: {fileID: 0}
   _cameraOffsetMultiplier: 1.5
+  _neghbours:
+  - {fileID: 5233586427416491104}
+  - {fileID: 146467136665585747}
+  - {fileID: 8584751061700298539}
+  - {fileID: 963186979902031516}

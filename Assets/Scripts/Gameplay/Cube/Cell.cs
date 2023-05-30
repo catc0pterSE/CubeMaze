@@ -1,6 +1,7 @@
 ﻿using Model;
 using Modules;
 using UnityEngine;
+using Utility.Extensions;
 
 namespace Gameplay.Cube
 {
@@ -12,7 +13,15 @@ namespace Gameplay.Cube
         [SerializeField] private SerializableDictionary<Direction, GameObject> _edges;
         [SerializeField] private Material _floorStartMaterial;
         [SerializeField] private Material _floorFinishMaterial;
+        [SerializeField] private Transform _ballSpawnPoint;
+        [SerializeField] private EndLevelTrigger _endLevelTrigger;
 
+        public bool IsStart { get; private set; }
+        public bool IsEnd { get; private set; }
+
+        public Vector3 BallSpawnPoint => _ballSpawnPoint.position;
+        public EndLevelTrigger EndLevelTrigger => _endLevelTrigger;
+        
         public void Initialize(Model.Cube.Cell cellModel)
         {
             foreach (var pair in cellModel.Walls)
@@ -23,10 +32,17 @@ namespace Gameplay.Cube
                     _edges.Get(direction).SetActive(true);
 
                 if (cellModel.IsStart)
+                {
                     _floorMeshRenderer.material = _floorStartMaterial;
+                    IsStart = true;
+                }
 
                 if (cellModel.IsEnd)
+                {
                     _floorMeshRenderer.material = _floorFinishMaterial;
+                    IsEnd = true;
+                    _endLevelTrigger.gameObject.SetActive(true);
+                }
             }
         }
 

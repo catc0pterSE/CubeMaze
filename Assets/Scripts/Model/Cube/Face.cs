@@ -10,7 +10,7 @@ namespace Model.Cube
         private readonly int _faceSize;
         private readonly Cell[,] _cells;
 
-        private List<Face> _nonConsistentFaces = new List<Face>();
+        private readonly List<Face> _nonConsistentFaces = new List<Face>();
 
         public Face(int faceSize)
         {
@@ -78,7 +78,7 @@ namespace Model.Cube
                     if (j == 0)
                         cell.AddEdge(Direction.Left);
                     if (j == _faceSize-1)
-                        cell.AddEdge(Direction.Right);
+                        cell.AddEdge(Direction.Right); // TODO: move to monobeh?
                     
                     _cells[i, j] = cell;
                 }

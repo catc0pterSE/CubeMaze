@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Infrastructure.GameObjectFactory;
+using Model;
 using Model.Cube;
 using Modules;
 using UnityEngine;
@@ -8,23 +9,34 @@ namespace Gameplay.Cube
 {
     public class Cube : MonoBehaviour
     {
-        [SerializeField] private int _size;
         [SerializeField] private SerializableDictionary<CubeFaceType, Face> _faces;
 
-        private void Start()
+        public void Initialize(int size, IGameObjectFactory gameObjectFactory)
         {
-            Initialize();
+            Model.Cube.Cube cubeModel = new Model.Cube.Cube(size);
+            BackTrackingMazeGenerator generator = new BackTrackingMazeGenerator();
+            var randomCell = cubeModel.TypedFaces[CubeFaceType.Front][Random.Range(0, size), Random.Range(0, size)];
+            generator.Generate(randomCell);
+
+            foreach (var pair in cubeModel.TypedFaces)
+                _faces.Get(pair.Key).Initialize(pair.Value, gameObjectFactory);
+            
+            SetStartEnd();
         }
 
-        private void Initialize()
+        public Cell Start { get; private set; }
+        public Cell End { get; private set; }
+
+        private void SetStartEnd()
         {
-            Model.Cube.Cube cubeModel = new Model.Cube.Cube(_size);
-            BackTrackingMazeGenerator generator = new BackTrackingMazeGenerator();
-            var randomCell = cubeModel.TypedFaces[CubeFaceType.Front][Random.Range(0, _size), Random.Range(0, _size)];
-            generator.Generate(randomCell);
-            
-            foreach (var pair in cubeModel.TypedFaces)
-                _faces.Get(pair.Key).Initialize(pair.Value);
+            foreach (var pair in _faces.Dictionary)
+            {
+                if (pair.Value.Start != null)
+                    Start = pair.Value.Start;
+
+                if (pair.Value.End != null)
+                    End = pair.Value.End;
+            }
         }
 
         public Face GetFaceView(CubeFaceType cubeFaceType) =>

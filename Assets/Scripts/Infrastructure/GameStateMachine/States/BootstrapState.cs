@@ -1,5 +1,6 @@
 ﻿using Infrastructure.AssetProvider;
 using Infrastructure.GameObjectFactory;
+using Infrastructure.Input;
 using Modules.StateMachine;
 
 namespace Infrastructure.GameStateMachine.States
@@ -32,7 +33,10 @@ namespace Infrastructure.GameStateMachine.States
         {
             AssetProvider.AssetProvider assetProvider = new AssetProvider.AssetProvider();
             _services.RegisterSingle<IAssetProvider>(assetProvider);
-            _services.RegisterSingle<IGameObjectFactory>(new GameObjectFactory.GameObjectFactory(assetProvider));
+            GameObjectFactory.GameObjectFactory gameObjectFactory = new GameObjectFactory.GameObjectFactory(assetProvider);
+            _services.RegisterSingle<IGameObjectFactory>(gameObjectFactory);
+            IInputService inputService = gameObjectFactory.CreateInputService();
+            _services.RegisterSingle<IInputService>(inputService);
         }
     }
 }

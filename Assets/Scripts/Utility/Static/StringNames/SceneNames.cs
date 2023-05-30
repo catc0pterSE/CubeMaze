@@ -3,6 +3,6 @@
     public class SceneNames
     {
         public const string MainMenu = "Main Menu";
-        public const string Level = "Level {0}";
+        public const string Level = "Cube Scene";
     }
 }

@@ -1,5 +1,9 @@
 ﻿using Infrastructure.SceneManagement;
 using Modules.StateMachine;
+using UI;
+using UI.Menu;
+using UnityEngine;
+using Utility.Static.StringNames;
 
 namespace Infrastructure.GameStateMachine.States
 {
@@ -7,18 +11,16 @@ namespace Infrastructure.GameStateMachine.States
     {
         private readonly SceneLoader _sceneLoader;
         private readonly GameStateMachine _gameStateMachine;
-        private readonly Services.Services _services;
 
-        public LoadMainMenuState(SceneLoader sceneLoader, GameStateMachine gameStateMachine, Services.Services services)
+        public LoadMainMenuState(SceneLoader sceneLoader, GameStateMachine gameStateMachine)
         {
             _sceneLoader = sceneLoader;
             _gameStateMachine = gameStateMachine;
-            _services = services;
         }
 
         public void Enter()
         {
-           
+            _sceneLoader.LoadScene(SceneNames.MainMenu, OnSceneLoaded);
         }
 
         public void Exit()
@@ -28,7 +30,8 @@ namespace Infrastructure.GameStateMachine.States
         
         private void OnSceneLoaded()
         {
-          
+          GameObject.FindObjectOfType<Menu>().Initialize(_gameStateMachine);
+          _gameStateMachine.Enter<MenuState>();
         }
     }
 }

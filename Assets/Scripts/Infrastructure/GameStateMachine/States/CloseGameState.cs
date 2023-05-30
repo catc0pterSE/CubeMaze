@@ -1,4 +1,5 @@
 ﻿using Modules.StateMachine;
+using UnityEngine;
 
 namespace Infrastructure.GameStateMachine.States
 {
@@ -11,11 +12,13 @@ namespace Infrastructure.GameStateMachine.States
             _services = services;
         }
 
-        public void Enter() 
+        public void Enter()
         {
-          
+            Application.Quit();
         }
-        
-        public void Exit() {}
+
+        public void Exit()
+        {
+        }
     }
 }
