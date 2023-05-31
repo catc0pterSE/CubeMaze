@@ -47,7 +47,6 @@ namespace Infrastructure.GameStateMachine.States
             ball.Initialize(camera.transform);
             camera.Initialize(cube, inputService);
             EndLevelMenu endLevelMenu = GameObject.FindObjectOfType<EndLevelMenu>(true);
-            Debug.Log(endLevelMenu == null);
             endLevelMenu.Initialize(cube.End.EndLevelTrigger, camera, _gameStateMachine);
             _gameStateMachine.Enter<GameplayLoopState>();
         }
